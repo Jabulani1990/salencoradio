@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Salenco Radio</title>
+    <style>
+        :root {
+            --bg-primary: #121212;
+            --text-primary: #e0e0e0;
+            --accent-color: #1DB954;
+            --secondary-bg: #1E1E1E;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .radio-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--secondary-bg);
+        }
+
+        .logo {
+            max-width: 150px;
+            height: 150px;
+        }
+
+        .live-section {
+            display: flex;
+            align-items: center;
+            background-color: var(--secondary-bg);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        .audio-visualizer {
+            flex: 1;
+            height: 100px;
+            background-color: var(--bg-primary);
+            display: flex;
+            align-items: flex-end;
+            gap: 3px;
+            padding: 0 10px;
+        }
+
+        .visualizer-bar {
+            width: 10px;
+            background-color: var(--accent-color);
+            transition: height 0.1s ease;
+        }
+
+        .player-controls {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .main-controls {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .control-btn {
+            background-color: var(--accent-color);
+            color: var(--bg-primary);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .control-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .advanced-controls {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .track-info {
+            text-align: center;
+            color: var(--text-primary);
+            margin-top: 10px;
+        }
+
+        .eq-toggle, .stream-quality {
+            background-color: var(--secondary-bg);
+            color: var(--text-primary);
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="radio-container">
+        <header class="header">
+            <img src="logo.jpeg" alt="Salenco Radio Logo" class="logo">
+            <div class="live-indicator">LIVE BROADCAST</div>
+        </header>
+
+        <section class="live-section">
+            <div class="audio-visualizer" id="visualizer">
+                <!-- Visualizer bars will be dynamically generated -->
+            </div>
+        </section>
+
+        <div class="track-info">
+            <h2 id="current-station">Salenco Radio Main Channel</h2>
+            <p id="current-track">Connecting to live stream...</p>
+        </div>
+
+        <div class="player-controls">
+            <div class="main-controls">
+                <button class="control-btn" id="play-pause">Play</button>
+                <input type="range" id="volume" min="0" max="100" value="50">
+            </div>
+
+            <div class="advanced-controls">
+                <button class="eq-toggle" id="eq-toggle">Equalizer</button>
+                <select class="stream-quality" id="stream-quality">
+                    <option value="low">Low Quality</option>
+                    <option value="medium" selected>Medium Quality</option>
+                    <option value="high">High Quality</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const visualizer = document.getElementById('visualizer');
+        const playPauseBtn = document.getElementById('play-pause');
+        const volumeControl = document.getElementById('volume');
+        const eqToggle = document.getElementById('eq-toggle');
+        const streamQuality = document.getElementById('stream-quality');
+        const currentTrack = document.getElementById('current-track');
+
+        // Create visualizer bars
+        function createVisualizerBars() {
+            for (let i = 0; i < 20; i++) {
+                const bar = document.createElement('div');
+                bar.classList.add('visualizer-bar');
+                visualizer.appendChild(bar);
+            }
+        }
+
+        // Animate visualizer
+        function animateVisualizer() {
+            const bars = document.querySelectorAll('.visualizer-bar');
+            bars.forEach(bar => {
+                const randomHeight = Math.random() * 100;
+                bar.style.height = `${randomHeight}%`;
+            });
+        }
+
+        // Initialize
+        createVisualizerBars();
+        setInterval(animateVisualizer, 100);
+
+        playPauseBtn.addEventListener('click', () => {
+            const isPlaying = playPauseBtn.textContent === 'Pause';
+            playPauseBtn.textContent = isPlaying ? 'Play' : 'Pause';
+            currentTrack.textContent = isPlaying 
+                ? 'Stream Paused' 
+                : 'Connecting to Salenco Radio...';
+        });
+
+        volumeControl.addEventListener('input', (e) => {
+            console.log(`Volume: ${e.target.value}%`);
+        });
+
+        eqToggle.addEventListener('click', () => {
+            alert('Equalizer settings would be shown here');
+        });
+
+        streamQuality.addEventListener('change', (e) => {
+            console.log(`Stream quality changed to: ${e.target.value}`);
+        });
+    </script>
+</body>
+</html>
